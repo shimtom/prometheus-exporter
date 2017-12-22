@@ -11,6 +11,7 @@ services:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /:/rootfs:ro
+    restart: always
 
   blackbox_exporter:
     command: ['--config.file=/etc/blackbox/blackbox.yml']
@@ -20,6 +21,7 @@ services:
       - 9115:9115
     volumes:
       - ./blackbox.yml:/etc/blackbox/blackbox.yml
+    restart: always
 
   cadvisor:
     image: google/cadvisor:latest
@@ -32,3 +34,4 @@ services:
       - /dev/disk/:/dev/disk:ro
     ports:
       - 9080:8080
+    restart: always
