@@ -4,46 +4,46 @@ services:
     command: ['--path.procfs', '/host/proc', '--path.sysfs', '/host/sys', '--collector.filesystem.ignored-mount-points', '"^/(sys|proc|dev|host|etc)($$|/)\"']
     container_name: node_exporter
     image: prom/node-exporter:latest
+    logging:
+      driver: journald
+      options:
+        tag: "{{.Name}}"
     network_mode: "host"
+    restart: always
     ports:
       - 9100:9100
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /:/rootfs:ro
-    restart: always
-    logging:
-      driver: journald
-      options:
-        tag: "{{.Name}}"
 
   blackbox_exporter:
     command: ['--config.file=/etc/blackbox/blackbox.yml']
     container_name: blackbox_exporter
     image: prom/blackbox-exporter
-    ports:
-      - 9115:9115
-    volumes:
-      - ./blackbox.yml:/etc/blackbox/blackbox.yml
-    restart: always
     logging:
       driver: journald
       options:
         tag: "{{.Name}}"
+    ports:
+      - 9115:9115
+    restart: always
+    volumes:
+      - ./blackbox.yml:/etc/blackbox/blackbox.yml
 
   cadvisor:
-    image: google/cadvisor:latest
     container_name: cadvisor
+    image: google/cadvisor:latest
+    logging:
+      driver: journald
+      options:
+        tag: "{{.Name}}"
+    ports:
+      - 9080:8080
+    restart: always
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
       - /dev/disk/:/dev/disk:ro
-    ports:
-      - 9080:8080
-    restart: always
-    logging:
-      driver: journald
-      options:
-        tag: "{{.Name}}"
