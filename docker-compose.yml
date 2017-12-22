@@ -12,6 +12,10 @@ services:
       - /sys:/host/sys:ro
       - /:/rootfs:ro
     restart: always
+    logging:
+      driver: journald
+      options:
+        tag: "{{.Name}}"
 
   blackbox_exporter:
     command: ['--config.file=/etc/blackbox/blackbox.yml']
@@ -22,6 +26,10 @@ services:
     volumes:
       - ./blackbox.yml:/etc/blackbox/blackbox.yml
     restart: always
+    logging:
+      driver: journald
+      options:
+        tag: "{{.Name}}"
 
   cadvisor:
     image: google/cadvisor:latest
@@ -35,3 +43,7 @@ services:
     ports:
       - 9080:8080
     restart: always
+    logging:
+      driver: journald
+      options:
+        tag: "{{.Name}}"
