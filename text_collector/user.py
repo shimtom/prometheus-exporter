@@ -48,10 +48,10 @@ def who():
             username = l.split(':')[0]
             users.setdefault(username, [])
 
-    print('# HELP user_login login user')
+    print('# HELP node_login_user login user')
     for username, value in users.items():
         for v in value:
-            print('user_login{username="%s",line="%s",comment="%s"} 1 %d' % (
+            print('node_login_user{username="%s",line="%s",comment="%s"} 1 %d' % (
                 username, v['line'], v['timestamp'], v['comment']))
 
 
