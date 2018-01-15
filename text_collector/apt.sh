@@ -10,15 +10,16 @@
 # Author: Ben Kochie <superq@gmail.com>
 
 upgrades="$(/usr/bin/apt-get --just-print upgrade \
-  | /usr/bin/awk -F'[()]' \
+  | /usr/bin/awk -F '[()]' \
       '/^Inst/ { sub("^[^ ]+ ", "", $2); sub("\\[", " ", $2);
-                 sub(" ", "", $2); sub("\\]", "", $2); print $2 }'
+                 sub(" ", "", $2); sub("\\]", "", $2); print $2 }' \
   | /usr/bin/sort \
   | /usr/bin/uniq -c \
   | awk '{ gsub(/\\\\/, "\\\\", $2); gsub(/\"/, "\\\"", $2);
            gsub(/\[/, "", $3); gsub(/\]/, "", $3);
-           print "apt_upgrades_pending{origin=\"" $2 "\",arch=\"" $3 "\"} " $1}'
+           print "apt_upgrades_pending{origin=\"" $2 "\",arch=\"" $3 "\"} " $1}' \
 )"
+
 echo '# HELP apt_upgrades_pending Apt package pending updates by origin.'
 echo '# TYPE apt_upgrades_pending gauge'
 if [[ -n "${upgrades}" ]] ; then
