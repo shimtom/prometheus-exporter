@@ -1,36 +1,5 @@
 version: '3'
 services:
-  node_exporter:
-    command: ['--path.procfs', '/host/proc', '--path.sysfs', '/host/sys', '--collector.filesystem.ignored-mount-points', '"^/(sys|proc|dev|host|etc)($$|/)\"']
-    container_name: node_exporter
-    image: prom/node-exporter:latest
-    logging:
-      driver: journald
-      options:
-        tag: "{{.Name}}"
-    network_mode: "host"
-    restart: always
-    ports:
-      - 9100:9100
-    volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /:/rootfs:ro
-
-  blackbox_exporter:
-    command: ['--config.file=/etc/blackbox/blackbox.yml']
-    container_name: blackbox_exporter
-    image: prom/blackbox-exporter
-    logging:
-      driver: journald
-      options:
-        tag: "{{.Name}}"
-    ports:
-      - 9115:9115
-    restart: always
-    volumes:
-      - ./blackbox.yml:/etc/blackbox/blackbox.yml
-
   cadvisor:
     container_name: cadvisor
     image: google/cadvisor:latest
