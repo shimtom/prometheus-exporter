@@ -23,9 +23,9 @@ def timestamp(arg):
 
 def who():
     users = {}
-    result = get_output(['who', '-H'])
+    result = get_output(['who', '-H']).split('\n')
     header = result[0].split()
-    for l in result[1:].split('\n'):
+    for l in result[1:]:
         if len(l) > 0:
             splitted = l.split()[:2]
             username, line = splitted[:2]
@@ -41,8 +41,6 @@ def who():
                 'comment': comment or ''
             })
 
-    result.split('\n')
-
     with open('/etc/passwd', 'r') as f:
         for l in f:
             username = l.split(':')[0]
@@ -52,7 +50,7 @@ def who():
     for username, value in users.items():
         for v in value:
             print('node_login_user{username="%s",line="%s",comment="%s"} 1 %d' % (
-                username, v['line'], v['timestamp'], v['comment']))
+                username, v['line'], v['comment'], v['timestamp']))
 
 
 # Main function
