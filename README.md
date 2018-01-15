@@ -1,7 +1,7 @@
 # Prometheus Exporter
 
-## Install
+## Set up
 ```bash
-$ sudo sh -c "./install.sh"
+$ sudo sh -c "./setup.sh"
 ```
-* **Note**: `install.sh`を2回実行した場合,cronジョブが増えることに注意
+* **Note**: `setup.sh`を2回実行した場合,cronジョブが増えることに注意
