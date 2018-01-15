@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
-# Description: users metrics from ntpq -np.
-# Author: Ben Kochie <superq@gmail.com>
+# Description: users metrics.
+# TODO: cpu info per user
+# TODO: memory info per user
+# TODO: process info per user
 
 import subprocess
 
@@ -21,14 +23,22 @@ def timestamp(arg):
 
 def who():
     users = {}
-    result = get_output(['who'])
-    for l in result.split('\n'):
+    result = get_output(['who', '-H'])
+    header = result[0].split()
+    for l in result[1:].split('\n'):
         if len(l) > 0:
-            username, line = l.split()[:2]
-            login_time = l.split()[2:]
+            splitted = l.split()[:2]
+            username, line = splitted[:2]
+            if len(header) == 3:
+                login_time = splitted[2:]
+            else:
+                login_time = splitted[2:-1]
+                comment = splitted[-1]
+
             users.setdefault(username, []).append({
                 'line': line,
-                'timestamp': timestamp(login_time)
+                'timestamp': timestamp(login_time),
+                'comment': comment or ''
             })
 
     result.split('\n')
@@ -41,8 +51,8 @@ def who():
     print('# HELP user_login login user')
     for username, value in users.items():
         for v in value:
-            print('user_login{username="%s",line="%s"} 1 %d' % (
-                username, v['line'], v['timestamp']))
+            print('user_login{username="%s",line="%s",comment="%s"} 1 %d' % (
+                username, v['line'], v['timestamp'], v['comment']))
 
 
 # Main function
