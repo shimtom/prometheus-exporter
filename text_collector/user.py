@@ -49,8 +49,8 @@ def who():
     print('# HELP node_login_user login user')
     for username, value in users.items():
         for v in value:
-            print('node_login_user{username="%s",line="%s",comment="%s"} 1 %d' % (
-                username, v['line'], v['comment'], v['timestamp']))
+            print('node_login_user{username="%s",line="%s",comment="%s"} 1' % (
+                username, v['line'], v['comment']))
 
 
 # Main function
