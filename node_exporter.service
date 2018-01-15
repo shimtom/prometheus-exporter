@@ -1,0 +1,18 @@
+[Unit]
+Description=Node Exporter
+
+[Service]
+EnvironmentFile=/etc/node_exporter
+ExecStartPre=-/usr/bin/mkdir -p ${TEXT_COLLECTOR_DIR}
+ExecStart=/usr/sbin/node_exporter \
+  --collector.textfile.directory ${TEXT_COLLECTOR_DIR} \
+  --collector.netdev.ignored-devices ${NETDEV_IGNORED} \
+  --collector.filesystem.ignored-mount-points=${FILESYSTEM_IGNORED_MOUNT_POINTS} \
+  --collector.systemd --collector.systemd.unit-whitelist=${SYSTEMD_WHITELIST} \
+  --collector.nfs
+
+Restart=always
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target
