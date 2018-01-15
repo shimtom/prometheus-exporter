@@ -1,7 +1,7 @@
-# !/bin/bash
+#!/bin/bash
 
 function install_node_exporter() {
-  version=${0}
+  version=${1}
   echo "Install node exporter version ${version}"
   url="https://github.com/prometheus/node_exporter/releases/download/v${version}/node_exporter-${version}.linux-amd64.tar.gz"
   wget -O - ${url} | tar zxvf -

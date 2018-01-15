@@ -1,4 +1,4 @@
 SYSTEMD_WHITELIST=^(docker.service|systemd-journald.service|etcd2.service)$
-FILESYSTEM_IGNORED_MOUNT_POINTS=^/(sys|proc|auto|run|boot|media|tmp|dev|var/lib/docker)($|/)"
+FILESYSTEM_IGNORED_MOUNT_POINTS=^/(sys|proc|auto|run|boot|media|tmp|dev|var/lib/docker)($|/)
 NETDEV_IGNORED=^(br|veth|docker)
-TEXT_COLLECTOR_DIR="/var/lib/node_exporter/textfile_collector"
+TEXT_COLLECTOR_DIR=/var/lib/node_exporter/textfile_collector
