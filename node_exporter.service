@@ -8,8 +8,7 @@ ExecStart=/usr/sbin/node_exporter \
   --collector.textfile.directory="${TEXT_COLLECTOR_DIR}" \
   --collector.netdev.ignored-devices="${NETDEV_IGNORED}" \
   --collector.filesystem.ignored-mount-points="${FILESYSTEM_IGNORED_MOUNT_POINTS}" \
-  --collector.systemd --collector.systemd.unit-whitelist="${SYSTEMD_WHITELIST}" \
-  --collector.nfs
+  --collector.systemd --collector.systemd.unit-whitelist="${SYSTEMD_WHITELIST}"
 
 Restart=always
 RestartSec=10s
