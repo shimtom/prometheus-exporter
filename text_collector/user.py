@@ -16,28 +16,24 @@ def get_output(command):
     return output.decode()
 
 
-def timestamp(arg):
-    # TODO: implement converting arg to timestamp
-    return 0
-
-
 def who():
     users = {}
     result = get_output(['who', '-H']).split('\n')
     header = result[0].split()
     for l in result[1:]:
         if len(l) > 0:
-            splitted = l.split()[:2]
+            splitted = l.split()
             username, line = splitted[:2]
+            login_time = splitted[2:-1]
+            comment = None
             if len(header) == 3:
-                login_time = splitted[2:]
+                login_time.append(splitted[-1])
             else:
-                login_time = splitted[2:-1]
                 comment = splitted[-1]
 
             users.setdefault(username, []).append({
                 'line': line,
-                'timestamp': timestamp(login_time),
+                'time': ' '.join(login_time),
                 'comment': comment or ''
             })
 
@@ -46,11 +42,11 @@ def who():
             username = l.split(':')[0]
             users.setdefault(username, [])
 
-    print('# HELP node_login_user login user')
+    print('# HELP node_login_user_info login user information')
+    s = 'node_login_user_info{username="%s",line="%s",comment="%s",time="%s"} 1'
     for username, value in users.items():
         for v in value:
-            print('node_login_user{username="%s",line="%s",comment="%s"} 1' % (
-                username, v['line'], v['comment']))
+            print(s % (username, v['line'], v['comment'], v['time']))
 
 
 # Main function
